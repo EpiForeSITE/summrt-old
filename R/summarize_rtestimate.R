@@ -53,6 +53,18 @@ new_summrt <- function(
   )
 }
 
+#' @export
+#' @rdname new_summrt 
+#' @param x An object of class `summrt_summary`.
+#' @param ... Additional arguments passed to methods.
+print.summrt_summary <- function(x, ...) {
+  cat("Summary of Rt estimation\n")
+  cat("Package : ", x$package, "\n")
+  cat("Notes   : ", x$notes, "\n")
+  print(x$estimates)
+  invisible(x)
+}
+
 #' Extract Rt estimation from a model fit
 #' @param x Object to extract Rt from.
 #' @param ... Additional arguments passed to methods.
@@ -88,7 +100,7 @@ summarize_rtestimate.cv_poisson_rt <- function(
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
 
   new_summrt(
-    date = x$x,
+    date = as.integer(x$full_fit$x),
     median = cb$fit,
     lb = cb[[2]], # danger
     ub = cb[[3]],
@@ -109,12 +121,12 @@ summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ...,
   if (is.null(lambda)) {
     lambda <- 10^stats::median(log10(x$lambda))
   }
-  checkmate::assert_number(lambda, lower = 0)
+  checkmate::assert_string(lambda)
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
   
   new_summrt(
-    date = x$x,
+    date = as.integer(x$x),
     median = cb$fit,
     lb = cb[[2]], 
     ub = cb[[3]],
@@ -179,6 +191,7 @@ summarize_rtestimate.Rt <- function(x, ...) {
     median  = x$RLPS$Rq0.50,
     lb      = x$RLPS$Rq0.025,
     ub      = x$RLPS$Rq0.975,
-    package = "EpiLPS"
+    package = "EpiLPS",
+    notes = notes
   )
 }
