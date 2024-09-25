@@ -21,6 +21,6 @@ expect_equal(std_epiestim$package, "EpiEstim")
 message("Check that there are no NAs in median, lbs, ubs")
 expect_true(all(!is.na(std_epiestim$estimates$median)))
 expect_true(all(!is.na(std_epiestim$estimates$lb)))
-expect_true(all(!is.na(std_Epiestim$estimates$ub)))
+expect_true(all(!is.na(std_epiestim$estimates$ub)))
 
 
