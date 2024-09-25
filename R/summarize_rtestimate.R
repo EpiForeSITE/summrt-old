@@ -132,16 +132,12 @@ summarize_rtestimate.epinow <- function(x, level = 0.95, ..., notes = "") {
   }
 
   y_extract <- rstan::extract(x$estimates$fit)$R
-  t_length <- as.integer(
-    max(lubridate::ymd(
-      x$estimates$observations$date),
-      na.rm = TRUE) -
-    min(lubridate::ymd(x$estimates$observations$date),
-      na.rm = TRUE)
-      )
+t_max <- max(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
+t_min <- min(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
+t_length <- as.integer(t_max - t_min)
   
   return(new_summrt(
-    date = c(0:t_length, (t_length+1):(t_length +7)),
+    date = c(0:t_length, (t_length + 1):(t_length + 7)),
     median = apply(y_extract, 2, stats::quantile, probs = 0.5),
     lb = apply(y_extract, 2, stats::quantile, probs = 0.025),
     ub = apply(y_extract, 2, stats::quantile, probs = 0.975)
