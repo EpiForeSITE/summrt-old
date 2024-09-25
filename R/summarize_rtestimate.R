@@ -128,7 +128,7 @@ summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ...,
   checkmate::assert_number(lambda, lower = 0)
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
-  
+
   new_summrt(
     date = as.integer(x$x),
     median = cb$fit,
@@ -152,7 +152,7 @@ summarize_rtestimate.epinow <- function(x, level = 0.95, ..., notes = "") {
   t_max <- max(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
   t_min <- min(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
   t_length <- as.integer(t_max - t_min)
-  
+
   return(new_summrt(
     date = c(0:t_length, (t_length + 1):(t_length + 7)),
     median = apply(y_extract, 2, stats::quantile, probs = 0.5),
@@ -161,7 +161,7 @@ summarize_rtestimate.epinow <- function(x, level = 0.95, ..., notes = "") {
     package = "EpiNow2",
     notes = notes
   ))
-  
+
 }
 
 #' @export
@@ -171,7 +171,7 @@ summarize_rtestimate.estimate_R <- function(x, ..., notes = "") {
   if (!requireNamespace("EpiEstim", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiEstim} package for this functionality.")
   }
-  
+
   new_summrt(
     date    = as.integer(x$R$t_end),
     median  = x$R$`Median(R)`,
