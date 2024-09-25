@@ -83,7 +83,7 @@ summarize_rtestimate.cv_poisson_rt <- function(
     cli::cli_abort("You must install the {.pkg rtestim} package for this functionality.")
   }
 
-  checkmate::assert_number(lambda, lower = 0)
+  checkmate::assert_string(lambda)
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
 
@@ -142,6 +142,7 @@ summarize_rtestimate.epinow <- function(x, level = 0.95, ..., notes = "") {
     median = apply(y_extract, 2, stats::quantile, probs = 0.5),
     lb = apply(y_extract, 2, stats::quantile, probs = 0.025),
     ub = apply(y_extract, 2, stats::quantile, probs = 0.975),
+    package = "EpiNow2",
     notes = notes
   ))
   
