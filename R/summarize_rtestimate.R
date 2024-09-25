@@ -158,7 +158,7 @@ summarize_rtestimate.Rt <- function(x, ...) {
     cli::cli_abort("You must install the {.pkg EpiLPS} package for this functionality.")
   }
 
-  new_summarize(
+  new_summrt(
     date    = x$RLPS$Time,
     median  = x$RLPS$Rq0.50,
     lb      = x$RLPS$Rq0.025,
