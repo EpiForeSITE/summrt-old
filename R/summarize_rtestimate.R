@@ -8,7 +8,7 @@
 #' @param ub Double vector. vector of upper bounds.
 #' @param package String. Name of the package.
 #' @param notes String. Notes about the summary.
-#' @export 
+#' @export
 #' @return A list of class `summrt_summary`. with the following components:
 #' - `estimates`: A tibble with the following columns:
 #'   - `date`: Integer vector. vector of index dates.
@@ -18,9 +18,9 @@
 #' - `package`: String. Name of the package.
 #' - `notes`: String. Notes about the summary.
 new_summrt <- function(
-  date, median, lb, ub, package, notes
+    date, median, lb, ub, package, notes
 ) {
-
+  
   # Asserting the types
   checkmate::assert_integer(date)
   checkmate::assert_double(median)
@@ -28,7 +28,7 @@ new_summrt <- function(
   checkmate::assert_double(ub)
   checkmate::assert_string(package)
   checkmate::assert_string(notes)
-
+  
   # Checking the length
   len_date <- length(date)
   len_median <- length(median)
@@ -37,7 +37,7 @@ new_summrt <- function(
   if (len_date != len_median || len_date != len_lb || len_date != len_up) {
     stop("The length of the date, median, lb, and ub should be the same.")
   }
-
+  
   structure(
     list(
       estimates = tibble::tibble(
@@ -54,7 +54,7 @@ new_summrt <- function(
 }
 
 #' @export
-#' @rdname new_summrt 
+#' @rdname new_summrt
 #' @param x An object of class `summrt_summary`.
 #' @param ... Additional arguments passed to methods.
 print.summrt_summary <- function(x, ...) {
@@ -87,18 +87,22 @@ summarize_rtestimate.default <- function(x, ..., notes = "") {
 #' @param level Confidence level for the confidence interval.
 #' @param lambda The Poisson parameter (`cv_poisson_rt`).
 summarize_rtestimate.cv_poisson_rt <- function(
-    x, level = 0.95, lambda = "lambda.1se", ...,
+    x, level = 0.95, lambda = c("lambda.1se", "lambda.min"), ...,
     notes = "cv_poisson_rt"
-    ) {
-
+) {
+  
   if (!requireNamespace("rtestim", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg rtestim} package for this functionality.")
   }
-
-  checkmate::assert_string(lambda)
+  
+  if (is.character(lambda)) {
+    lambda <- x[[match.arg(lambda)]]
+  } else {
+    checkmate::assert_number(lambda, lower = 0)
+  }
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
-
+  
   new_summrt(
     date = as.integer(x$full_fit$x),
     median = cb$fit,
@@ -113,22 +117,22 @@ summarize_rtestimate.cv_poisson_rt <- function(
 #' @importFrom stats median
 #' @export
 summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ..., notes = "poisson_rt") {
-
+  
   if (!requireNamespace("rtestim", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg rtestim} package for this functionality.")
   }
-
+  
   if (is.null(lambda)) {
     lambda <- 10^stats::median(log10(x$lambda))
   }
-  checkmate::assert_string(lambda)
+  checkmate::assert_number(lambda, lower = 0)
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
   
   new_summrt(
     date = as.integer(x$x),
     median = cb$fit,
-    lb = cb[[2]], 
+    lb = cb[[2]],
     ub = cb[[3]],
     package = "rtestim",
     notes = notes
@@ -139,11 +143,11 @@ summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ...,
 #' @export
 #' @importFrom stats quantile
 summarize_rtestimate.epinow <- function(x, level = 0.95, ..., notes = "") {
-
+  
   if (!requireNamespace("EpiNow2", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiNow2} package for this functionality.")
   }
-
+  
   y_extract <- rstan::extract(x$estimates$fit)$R
   t_max <- max(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
   t_min <- min(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
@@ -181,17 +185,16 @@ summarize_rtestimate.estimate_R <- function(x, ..., notes = "") {
 #' @export
 #' @details The `Rt` method is for the `EpiLPS` package.
 #' @rdname summarize_rtestimate
-summarize_rtestimate.Rt <- function(x, ..., notes = "") {
+summarize_rtestimate.Rt <- function(x, ...) {
   if (!requireNamespace("EpiLPS", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiLPS} package for this functionality.")
   }
-
+  
   new_summrt(
     date    = x$RLPS$Time,
     median  = x$RLPS$Rq0.50,
     lb      = x$RLPS$Rq0.025,
     ub      = x$RLPS$Rq0.975,
-    package = "EpiLPS",
-    notes   = notes
+    package = "EpiLPS"
   )
 }
