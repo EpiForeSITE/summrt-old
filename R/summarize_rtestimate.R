@@ -192,6 +192,6 @@ summarize_rtestimate.Rt <- function(x, ..., notes = "") {
     lb      = x$RLPS$Rq0.025,
     ub      = x$RLPS$Rq0.975,
     package = "EpiLPS",
-    notes = notes
+    notes   = notes
   )
 }
