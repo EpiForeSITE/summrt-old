@@ -88,10 +88,10 @@ summarize_rtestimate.cv_poisson_rt <- function(
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
 
   new_summrt(
-    Date = x$x,
-    Rt_median = cb$fit,
-    Rt_lb = cb[[2]], # danger
-    Rt_ub = cb[[3]],
+    date = x$x,
+    median = cb$fit,
+    lb = cb[[2]], # danger
+    ub = cb[[3]],
     package = "rtestim",
     notes = notes
   )
