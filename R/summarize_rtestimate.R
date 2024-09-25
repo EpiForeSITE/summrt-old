@@ -114,7 +114,6 @@ summarize_rtestimate.epinow <- function(x, level = 0.95, ...) {
   if (!requireNamespace("EpiNow2", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiNow2} package for this functionality.")
   }
-  checkmate::assert_number(level, lower = 0, upper = 1)
 
   # res <- x$estimates$summarized |> dplyr::select()
 }
@@ -126,7 +125,6 @@ summarize_rtestimate.estimate_R <- function(x, ...) {
   if (!requireNamespace("EpiEstim", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiEstim} package for this functionality.")
   }
-  checkmate::assert_number(level, lower = 0, upper = 1)
 
   new_summarize(
     date    = x$R$t_end,
@@ -144,7 +142,6 @@ summarize_rtestimate.Rt <- function(x, ...) {
   if (!requireNamespace("EpiLPS", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiLPS} package for this functionality.")
   }
-  checkmate::assert_number(level, lower = 0, upper = 1)
 
   new_summarize(
     date    = NA,
