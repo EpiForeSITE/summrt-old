@@ -4,7 +4,7 @@ EpiEstim_obj <- readRDS(
               package = "summrt")
 )
 
-std_epiestim <- summarize_rtestimate(epiestim_obj)
+std_epiestim <- summarize_rtestimate(EpiEstim_obj)
 
 message("Check that names of EpiEstim are correct")
 checkmate::expect_names( names(std_epiestim), 
