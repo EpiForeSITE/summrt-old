@@ -17,7 +17,7 @@ summarize_rtestimate(x, ..., notes = "")
 \method{summarize_rtestimate}{cv_poisson_rt}(
   x,
   level = 0.95,
-  lambda = "lambda.1se",
+  lambda = c("lambda.1se", "lambda.min"),
   ...,
   notes = "cv_poisson_rt"
 )
@@ -28,7 +28,7 @@ summarize_rtestimate(x, ..., notes = "")
 
 \method{summarize_rtestimate}{estimate_R}(x, ..., notes = "")
 
-\method{summarize_rtestimate}{Rt}(x, ..., notes = "")
+\method{summarize_rtestimate}{Rt}(x, ...)
 }
 \arguments{
 \item{x}{Object to extract Rt from.}
