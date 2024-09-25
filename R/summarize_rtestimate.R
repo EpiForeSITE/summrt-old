@@ -125,7 +125,7 @@ summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ...,
   if (is.null(lambda)) {
     lambda <- 10^stats::median(log10(x$lambda))
   }
-  checkmate::assert_string(lambda)
+  checkmate::assert_number(lambda, lower = 0)
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
 
