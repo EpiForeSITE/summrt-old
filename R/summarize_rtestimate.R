@@ -98,7 +98,7 @@ summarize_rtestimate.cv_poisson_rt <- function(
   if (is.character(lambda)) {
     lambda <- x[[match.arg(lambda)]]
   } else {
-    checkmate::assert_numeric(lambda, len = 1L)
+    checkmate::assert_number(lambda, lower = 0)
   }
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
