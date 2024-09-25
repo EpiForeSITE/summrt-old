@@ -117,7 +117,23 @@ summarize_rtestimate.epinow <- function(x, level = 0.95, ...) {
   }
   checkmate::assert_number(level, lower = 0, upper = 1)
 
-  # res <- x$estimates$summarized |> dplyr::select()
+  y_extract <- rstan::extract(x$estimates$fit)$R
+  t_length <- as.integer(
+    max(lubridate::ymd(
+      x$estimates$observations$date),
+      na.rm = TRUE) -
+    min(lubridate::ymd(x$estimates$observations$date),
+      na.rm = TRUE)
+      )
+  
+  df <- tibble::tibble(
+    date = c(0:t_length, (t_length+1):(t_length +7)),
+    Rt_median = apply(y_extract, 2, quantile, probs = 0.5),
+    Rt_lb = apply(y_extract, 2, quantile, probs = 0.025),
+    Rt_ub = apply(y_extract, 2, quantile, probs = 0.975)
+  )
+  return(df)
+  
 }
 
 #' @export 
