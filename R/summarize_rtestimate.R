@@ -174,7 +174,7 @@ summarize_rtestimate.estimate_R <- function(x, ..., notes = "") {
   }
 
   new_summrt(
-    date    = as.integer(x$R$t_end),
+    date    = as.integer((x$R$t_end + x$R$t_start) / 2),
     median  = x$R$`Median(R)`,
     lb      = x$R$`Quantile.0.025(R)`,
     ub      = x$R$`Quantile.0.975(R)`,
