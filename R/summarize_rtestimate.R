@@ -20,7 +20,7 @@
 new_summrt <- function(
     date, median, lb, ub, package, notes
 ) {
-  
+
   # Asserting the types
   checkmate::assert_integer(date)
   checkmate::assert_double(median)
@@ -28,7 +28,7 @@ new_summrt <- function(
   checkmate::assert_double(ub)
   checkmate::assert_string(package)
   checkmate::assert_string(notes)
-  
+
   # Checking the length
   len_date <- length(date)
   len_median <- length(median)
@@ -37,7 +37,7 @@ new_summrt <- function(
   if (len_date != len_median || len_date != len_lb || len_date != len_up) {
     stop("The length of the date, median, lb, and ub should be the same.")
   }
-  
+
   structure(
     list(
       estimates = tibble::tibble(
@@ -90,11 +90,11 @@ summarize_rtestimate.cv_poisson_rt <- function(
     x, level = 0.95, lambda = c("lambda.1se", "lambda.min"), ...,
     notes = "cv_poisson_rt"
 ) {
-  
+
   if (!requireNamespace("rtestim", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg rtestim} package for this functionality.")
   }
-  
+
   if (is.character(lambda)) {
     lambda <- x[[match.arg(lambda)]]
   } else {
@@ -102,7 +102,7 @@ summarize_rtestimate.cv_poisson_rt <- function(
   }
   checkmate::assert_number(level, lower = 0, upper = 1)
   cb <- rtestim::confband(x, lambda = lambda, level = level, ...)
-  
+
   new_summrt(
     date = as.integer(x$full_fit$x),
     median = cb$fit,
@@ -117,11 +117,11 @@ summarize_rtestimate.cv_poisson_rt <- function(
 #' @importFrom stats median
 #' @export
 summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ..., notes = "poisson_rt") {
-  
+
   if (!requireNamespace("rtestim", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg rtestim} package for this functionality.")
   }
-  
+
   if (is.null(lambda)) {
     lambda <- 10^stats::median(log10(x$lambda))
   }
@@ -143,18 +143,19 @@ summarize_rtestimate.poisson_rt <- function(x, level = 0.95, lambda = NULL, ...,
 #' @export
 #' @importFrom stats quantile
 summarize_rtestimate.epinow <- function(x, level = 0.95, ..., notes = "") {
-  
+
   if (!requireNamespace("EpiNow2", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiNow2} package for this functionality.")
   }
-  
+
   y_extract <- rstan::extract(x$estimates$fit)$R
   t_max <- max(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
   t_min <- min(lubridate::ymd(x$estimates$observations$date), na.rm = TRUE)
   t_length <- as.integer(t_max - t_min)
+  t_length_forecast <- ncol(rstan::extract(x$estimates$fit)$R) - nrow(x$estimates$observations)
 
   return(new_summrt(
-    date = c(0:t_length, (t_length + 1):(t_length + 7)),
+    date = c(0:t_length, (t_length + 1):(t_length + t_length_forecast)),
     median = apply(y_extract, 2, stats::quantile, probs = 0.5),
     lb = apply(y_extract, 2, stats::quantile, probs = 0.025),
     ub = apply(y_extract, 2, stats::quantile, probs = 0.975),
@@ -189,7 +190,7 @@ summarize_rtestimate.Rt <- function(x, ..., notes = "") {
   if (!requireNamespace("EpiLPS", quietly = TRUE)) {
     cli::cli_abort("You must install the {.pkg EpiLPS} package for this functionality.")
   }
-  
+
   new_summrt(
     date    = x$RLPS$Time,
     median  = x$RLPS$Rq0.50,
