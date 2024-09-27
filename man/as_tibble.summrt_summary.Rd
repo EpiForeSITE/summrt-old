@@ -35,5 +35,5 @@ ex <- readRDS(system.file(
 ))
 summ_ex <- summarize_rtestimate(ex)
 as_tibble(summ_ex)
-as_tibble(summ_ex, .add_pkg_id = TRUE)
+as_tibble(summ_ex, add_pkg_id = TRUE)
 }
