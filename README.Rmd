@@ -44,5 +44,7 @@ rtestim_obj <- readRDS(
 ## standardize output from rtestim 
 std_rtestim <- summarize_rtestimate(rtestim_obj, lambda = "lambda.min")
 std_rtestim
+
+autoplot(std_rtestim)
 ```
 
