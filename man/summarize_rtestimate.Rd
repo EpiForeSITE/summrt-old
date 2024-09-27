@@ -10,9 +10,9 @@
 \alias{summarize_rtestimate.Rt}
 \title{Extract Rt estimation from a model fit}
 \usage{
-summarize_rtestimate(x, ..., notes = "")
+summarize_rtestimate(x, level = 0.95, ..., notes = "")
 
-\method{summarize_rtestimate}{default}(x, ..., notes = "")
+\method{summarize_rtestimate}{default}(x, level = 0.95, ..., notes = "")
 
 \method{summarize_rtestimate}{cv_poisson_rt}(
   x,
@@ -26,18 +26,18 @@ summarize_rtestimate(x, ..., notes = "")
 
 \method{summarize_rtestimate}{epinow}(x, level = 0.95, ..., notes = "")
 
-\method{summarize_rtestimate}{estimate_R}(x, ..., notes = "")
+\method{summarize_rtestimate}{estimate_R}(x, level = 0.95, ..., notes = "")
 
-\method{summarize_rtestimate}{Rt}(x, ..., notes = "")
+\method{summarize_rtestimate}{Rt}(x, level = 0.95, ..., notes = "")
 }
 \arguments{
 \item{x}{Object to extract Rt from.}
 
+\item{level}{Confidence level for the confidence interval.}
+
 \item{...}{Additional arguments passed to methods.}
 
 \item{notes}{String. Optional notes to add to the summary.}
-
-\item{level}{Confidence level for the confidence interval.}
 
 \item{lambda}{The Poisson parameter (\code{cv_poisson_rt}).}
 }
@@ -45,7 +45,8 @@ summarize_rtestimate(x, ..., notes = "")
 Extract Rt estimation from a model fit
 }
 \details{
-The \code{estimate_R} method is for the \code{EpiEstim} package.
+The \code{estimate_R} method is for the \code{EpiEstim} package. Currently,
+only levels in 50\%, 90\% and 95\% confidence levels are allowed.
 
 The \code{Rt} method is for the \code{EpiLPS} package.
 }
