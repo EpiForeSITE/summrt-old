@@ -4,10 +4,10 @@
 \alias{autoplot.summrt_summary}
 \title{Plot a summrt_summary object}
 \usage{
-\method{autoplot}{summrt_summary}(x, color = "dodgerblue4", add_reference_line = TRUE, ...)
+\method{autoplot}{summrt_summary}(object, color = "dodgerblue4", add_reference_line = TRUE, ...)
 }
 \arguments{
-\item{x}{A \code{summrt_summary} object}
+\item{object}{A \code{summrt_summary} object}
 
 \item{color}{A character string giving a color}
 
@@ -27,5 +27,5 @@ ex <- readRDS(system.file(
 ))
 summ_ex <- summarize_rtestimate(ex)
 autoplot(summ_ex)
-autoplot(summ_ex) + coord_cartesian(ylim = c(0, 2))
+autoplot(summ_ex) + ggplot2::coord_cartesian(ylim = c(0, 2))
 }

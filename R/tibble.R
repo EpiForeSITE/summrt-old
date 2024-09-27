@@ -6,8 +6,8 @@ tibble::as_tibble
 #' Coerce summrt_summary object to a tibble
 #'
 #' @param x A `summrt_summary` object
-#' @param .add_pkg_id Logical. Should the `pkg` field be included as a column.
-#' @inheritParams tibble::tibble
+#' @param add_pkg_id Logical. Should the `pkg` field be included as a column.
+#' @param ... ignored.
 #'
 #' @return A [tibble::tibble()]
 #' @export
