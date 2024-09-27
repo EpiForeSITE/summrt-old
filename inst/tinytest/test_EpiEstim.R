@@ -25,4 +25,8 @@ expect_true(all(!is.na(std_epiestim$estimates$median)))
 expect_true(all(!is.na(std_epiestim$estimates$lb)))
 expect_true(all(!is.na(std_epiestim$estimates$ub)))
 
-
+message("Check that different levels can be used")
+expect_error(summarize_rtestimate(EpiEstim_obj, level = 0.8))
+expect_silent(summarize_rtestimate(EpiEstim_obj))
+expect_silent(summarize_rtestimate(EpiEstim_obj, level = 0.5))
+expect_silent(summarize_rtestimate(EpiEstim_obj, level = 0.9))

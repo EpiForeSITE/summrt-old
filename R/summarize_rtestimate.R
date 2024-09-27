@@ -214,11 +214,23 @@ summarize_rtestimate.Rt <- function(x, level = 0.95, ..., notes = "") {
     cli::cli_abort("You must install the {.pkg EpiLPS} package for this functionality.")
   }
 
+  allowed_levels <- c(0.95, 0.9, 0.5)
+  if (min(abs(level - allowed_levels)) > sqrt(.Machine$double.eps)) {
+    cli::cli_abort(paste(
+      "For {.pkg EpiLPS}, allowable confidence levels are",
+      "{.val {allowed_levels}}, not {.val {level}}."
+    ))
+  }
+  probs <- level_to_probs(level)
+  probs <- lapply(probs, probs_to_char)
+  lb_name <- paste0("Rq", probs$lower)
+  ub_name <- paste0("Rq", probs$upper)
+
   new_summrt(
     date    = x$RLPS$Time,
     median  = x$RLPS$Rq0.50,
-    lb      = x$RLPS$Rq0.025,
-    ub      = x$RLPS$Rq0.975,
+    lb      = x$RLPS[[lb_name]],
+    ub      = x$RLPS[[ub_name]],
     level   = level,
     package = "EpiLPS",
     notes   = notes
