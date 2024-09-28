@@ -5,7 +5,7 @@
 \alias{print.summrt_summary}
 \title{Create a new summary object}
 \usage{
-new_summrt(date, median, lb, ub, package, notes)
+new_summrt(date, median, lb, ub, level, package, notes)
 
 \method{print}{summrt_summary}(x, ...)
 }
@@ -17,6 +17,8 @@ new_summrt(date, median, lb, ub, package, notes)
 \item{lb}{Double vector. vector of lower bounds.}
 
 \item{ub}{Double vector. vector of upper bounds.}
+
+\item{level}{Double scalar. the confidence level associated with \code{lb}/\code{ub}}
 
 \item{package}{String. Name of the package.}
 
@@ -36,6 +38,7 @@ A list of class \code{summrt_summary}. with the following components:
 \item \code{lb}: Double vector. vector of lower bounds.
 \item \code{ub}: Double vector. vector of upper bounds.
 }
+\item \code{level}: Double scalar.
 \item \code{package}: String. Name of the package.
 \item \code{notes}: String. Notes about the summary.
 }
