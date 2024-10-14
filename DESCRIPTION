@@ -13,6 +13,7 @@ RoxygenNote: 7.3.2
 Imports: 
     checkmate,
     cli,
+    ggplot2,
     tibble
 Suggests: 
     rtestim, tinytest, EpiNow2, EpiEstim, EpiLPS, rstan, lubridate

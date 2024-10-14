@@ -56,4 +56,8 @@ std_rtestim
 #>  9     8  1.28  0.486   2.07
 #> 10     9  1.32  0.560   2.08
 #> # ℹ 51 more rows
+
+autoplot(std_rtestim)
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
