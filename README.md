@@ -1,3 +1,5 @@
+> [!IMPORTANT]
+> This project has been moved to <https://github.com/EpiForeSITE/summrt>!
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
